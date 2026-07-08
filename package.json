@@ -1,0 +1,22 @@
+{
+  "name": "ka-thrift",
+  "version": "1.0.0",
+  "private": true,
+  "description": "K&A This & That Thrift — single-page static marketing website (Albany, NY). No build step; self-contained index.html.",
+  "license": "UNLICENSED",
+  "scripts": {
+    "start": "npx --yes serve -l 5180 .",
+    "serve": "npx --yes serve -l 5180 .",
+    "dev": "python -m http.server 5180"
+  },
+  "keywords": [
+    "static-site",
+    "thrift",
+    "albany",
+    "html",
+    "css",
+    "vanilla-js"
+  ],
+  "dependencies": {},
+  "devDependencies": {}
+}
