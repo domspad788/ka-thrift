@@ -883,8 +883,8 @@ section{position:relative}
            alt="The K&amp;A This &amp; That Thrift storefront inside Colonie Center, its hand-cut sign above an open entrance looking into the shop floor">
     </picture>
     <picture class="hero-layer" data-hero-layer aria-hidden="true">
-      <source media="(max-width:640px)" srcset="img/hero-storefront-front-p.jpg">
-      <img src="img/hero-storefront-front.jpg" width="2000" height="1125" loading="lazy" decoding="async" alt="">
+      <source media="(max-width:640px)" srcset="img/hero-storefront-angled-p.jpg">
+      <img src="img/hero-storefront-angled.jpg" width="2000" height="1125" loading="lazy" decoding="async" alt="">
     </picture>
   </div>
   <canvas id="dust" aria-hidden="true"></canvas>
@@ -1153,7 +1153,7 @@ section{position:relative}
         <div class="map-frame reveal">
           <iframe
             title="Map showing K&A This &amp; That Thrift at 1417 Central Ave, Albany, NY 12205"
-            src="https://maps.google.com/maps?q=1417%20Central%20Ave%2C%20Albany%2C%20NY%2012205&t=&z=15&ie=UTF8&iwloc=&output=embed"
+            src="https://www.openstreetmap.org/export/embed.html?bbox=-73.8233%2C42.7064%2C-73.8113%2C42.7144&amp;layer=mapnik&amp;marker=42.7103709%2C-73.8173242"
             loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
         <ul class="arrival reveal">
@@ -1191,12 +1191,6 @@ section{position:relative}
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 4h4l2 5-3 2a12 12 0 005 5l2-3 5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z"/></svg>
         Call The Shop
       </a>
-    </div>
-    <div class="follow-imgs reveal">
-      <div class="fi"><img src="img/IMG_0992-sm.jpg" width="675" height="900" decoding="async" alt="Vintage glassware collectibles" loading="lazy"></div>
-      <div class="fi"><img src="img/IMG_1010-sm.jpg" width="675" height="900" decoding="async" alt="Hot Wheels die-cast car collection" loading="lazy"></div>
-      <div class="fi"><img src="img/IMG_1002-sm.jpg" width="900" height="675" decoding="async" alt="Leather loveseat with farmhouse pillows" loading="lazy"></div>
-      <div class="fi"><img src="img/IMG_1003-sm.jpg" width="900" height="675" decoding="async" alt="Rustic log bed frame" loading="lazy"></div>
     </div>
   </div>
 </section>
@@ -1352,9 +1346,6 @@ section{position:relative}
      GAP: no clothing photo currently meets the bar — reshoot needed before
           clothing gets a card or a gallery slot. */
   var gallery = [
-    neo("shop-entrance-angled", "The storefront, just off the mall walkway", 1000, 1250, "At the door"),
-    neo("shop-entrance-front",  "Looking straight in from the entrance", 1400, 1050),
-
     old("IMG_0992", "The glass case: figurines, colored glass, curiosities", 675, 900, "Collectibles & media"),
     old("IMG_1010", "Hot Wheels, still on the card", 675, 900),
     neo("shop-vhs-corner", "A wall of VHS, Disney figures and boxed toys", 1000, 1250),
@@ -1396,8 +1387,7 @@ section{position:relative}
     // A curated subset of real finds, duplicated for a seamless loop.
     // Featured discoveries — the strongest images only, in a deliberate order.
     var freshPicks = ["shop-china-wall","IMG_1010","IMG_0992","IMG_1003","shop-dvd-corner",
-                      "IMG_0995","IMG_1004","shop-vhs-corner","IMG_1002","IMG_0998",
-                      "shop-entrance-front"];
+                      "IMG_0995","IMG_1004","shop-vhs-corner","IMG_1002","IMG_0998"];
     var byName = {};
     gallery.forEach(function(g){ byName[g.t.replace(/^img\/|-sm\.jpg$|\.jpg$/g,"")] = g; });
     var mHTML = "";
