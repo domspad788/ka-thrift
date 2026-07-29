@@ -10,19 +10,20 @@
 <meta property="og:description" content="Albany's hidden treasure shop. Vintage clothing, antiques, collectibles & one-of-a-kind finds. New inventory daily.">
 <meta property="og:type" content="business.business">
 <meta property="og:url" content="https://thisandthatthrift.com/">
-<meta property="og:image" content="https://thisandthatthrift.com/img/IMG_0989-hero.jpg">
+<meta property="og:image" content="https://thisandthatthrift.com/img/hero-storefront-angled.jpg">
 <meta property="og:image:alt" content="The K&amp;A This &amp; That Thrift storefront in Albany, NY">
 <meta property="og:site_name" content="K&amp;A This &amp; That Thrift">
 <meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="K&amp;A This &amp; That Thrift — There's Something New Every Day">
 <meta name="twitter:description" content="Albany's hidden treasure shop. Vintage clothing, antiques, collectibles & one-of-a-kind finds. New inventory daily.">
-<meta name="twitter:image" content="https://thisandthatthrift.com/img/IMG_0989-hero.jpg">
+<meta name="twitter:image" content="https://thisandthatthrift.com/img/hero-storefront-angled.jpg">
 <link rel="canonical" href="https://thisandthatthrift.com/">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%3E%3Crect%20width='24'%20height='24'%20rx='4'%20fill='%232b1d12'/%3E%3Cpath%20d='M12%203l1.7%205.2H19l-4.4%203.2%201.7%205.3L12%2013.4l-4.3%203.3%201.7-5.3L5%208.2h5.3z'%20fill='%23c1962f'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="image" href="img/IMG_0989-hero.jpg" fetchpriority="high">
+<link rel="preload" as="image" href="img/hero-storefront-angled.webp" type="image/webp" media="(min-width:641px)" fetchpriority="high">
+<link rel="preload" as="image" href="img/hero-storefront-angled-p.webp" type="image/webp" media="(max-width:640px)" fetchpriority="high">
 <link href="https://fonts.googleapis.com/css2?family=Rye&family=IM+Fell+English+SC&family=IM+Fell+English:ital@0;1&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 <script type="application/ld+json">
 {
@@ -31,7 +32,7 @@
   "name": "K&A This & That Thrift",
   "description": "Family-owned thrift and antique store in Albany, NY with new inventory every day — vintage clothing, antiques, collectibles, home goods, furniture and one-of-a-kind finds.",
   "url": "https://thisandthatthrift.com/",
-  "image": "https://thisandthatthrift.com/img/IMG_0989-hero.jpg",
+  "image": "https://thisandthatthrift.com/img/hero-storefront-angled.jpg",
   "telephone": "+1-518-487-4676",
   "priceRange": "$",
   "currenciesAccepted": "USD",
@@ -72,6 +73,11 @@
   --espresso-2:#3c2a1a;
   --ink:#1c130a;
   --gold:#c1962f;
+  /* motion: weighted deceleration, no overshoot — springs read modern, wrong for this brand */
+  --ease-cine:cubic-bezier(.22,.61,.24,1);
+  --ease-soft:cubic-bezier(.16,1,.3,1);
+  --dur-reveal:820ms;
+  --dur-ui:380ms;
   --gold-light:#e0bb5e;
   --copper:#a4562f;
   --brass:#9c7b3f;
@@ -185,24 +191,44 @@ section{position:relative}
 
 /* ---------- Hero ---------- */
 .hero{position:relative;min-height:100svh;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;color:var(--ivory)}
-.hero-bg{position:absolute;inset:0;background-size:cover;background-position:center 32%;transform:scale(1.08);will-change:transform}
+.hero-media{position:absolute;inset:0;overflow:hidden}
+.hero-layer{position:absolute;inset:0;opacity:0;transition:opacity 2.4s var(--ease-cine)}
+.hero-layer.is-active{opacity:1}
+.hero-layer img{width:100%;height:100%;object-fit:cover;object-position:center 45%;
+  transform:scale(1.001);transform-origin:52% 46%;will-change:transform}
+/* Ken Burns: 28s, linear. Easing here would visibly ramp the speed — a slow push must be constant. */
+.hero-layer img.kb{animation:kenburns 28s linear infinite alternate}
+@keyframes kenburns{from{transform:scale(1.001)}to{transform:scale(1.022)}}
 .hero::before{content:"";position:absolute;inset:0;z-index:1;
   background:
-    radial-gradient(ellipse at center, rgba(20,12,5,.28) 0%, rgba(20,12,5,.62) 60%, rgba(15,9,4,.86) 100%),
-    linear-gradient(180deg, rgba(28,19,10,.55), rgba(28,19,10,.25) 40%, rgba(28,19,10,.78));
+    radial-gradient(ellipse 78% 58% at 50% 44%, rgba(20,12,5,.52) 0%, rgba(20,12,5,.30) 55%, rgba(20,12,5,.06) 100%),
+    linear-gradient(180deg, rgba(28,19,10,.42) 0%, rgba(28,19,10,.10) 34%, rgba(28,19,10,.16) 62%, rgba(24,15,7,.72) 100%);
 }
 /* parchment vignette frame around hero */
 .hero::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
-  box-shadow:inset 0 0 120px 30px rgba(20,12,4,.85);
+  box-shadow:inset 0 0 130px 22px rgba(20,12,4,.52);
   border:14px solid transparent;
   border-image:linear-gradient(135deg,rgba(193,150,47,.6),rgba(124,90,49,.3),rgba(193,150,47,.6)) 1;
 }
 #dust{position:absolute;inset:0;z-index:3;pointer-events:none}
-.hero-inner{position:relative;z-index:4;padding:120px 22px 80px;max-width:980px}
-.hero-eyebrow{font-family:var(--fellsc);letter-spacing:.4em;text-transform:uppercase;font-size:.9rem;color:var(--gold-light);margin-bottom:1.1rem}
-.hero h1{font-family:var(--western);font-size:clamp(2.7rem,8.5vw,6rem);line-height:.95;color:#f6ead0;text-shadow:0 3px 0 rgba(20,12,4,.55),0 8px 30px rgba(0,0,0,.6)}
+.hero-inner{position:relative;z-index:4;padding:120px 22px 84px;max-width:900px}
+/* Load sequence — 140ms stagger, slower than the usual 80ms so it reads as a scroll unrolling. */
+.hero-inner>*{opacity:0;animation:heroIn 1.05s var(--ease-cine) forwards}
+.hero-eyebrow{animation-delay:.15s}
+.hero h1{animation:heroSign 1.25s var(--ease-cine) .29s forwards}
+.hero-tagline{animation-delay:.43s}
+.hero-actions{animation-delay:.57s}
+@keyframes heroIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+/* h1 uncovers like a sign being unveiled rather than sliding up */
+@keyframes heroSign{
+  from{opacity:0;filter:blur(9px);clip-path:inset(0 0 62% 0);transform:scale(.988)}
+  to{opacity:1;filter:blur(0);clip-path:inset(0 0 0 0);transform:none}
+}
+.hero-eyebrow{font-family:var(--fellsc);letter-spacing:.4em;text-transform:uppercase;font-size:clamp(.74rem,1.7vw,.9rem);color:var(--gold-light);margin-bottom:1.25rem;text-shadow:0 2px 12px rgba(20,12,4,.85)}
+.hero h1{font-family:var(--western);font-size:clamp(2.3rem,6.6vw,4.6rem);line-height:.98;color:#f6ead0;
+  text-shadow:0 2px 0 rgba(20,12,4,.5),0 6px 26px rgba(0,0,0,.72),0 0 60px rgba(20,12,4,.45)}
 .hero h1 .amp{color:var(--gold-light)}
-.hero-tagline{font-family:var(--fell);font-style:italic;font-size:clamp(1.3rem,3.2vw,2rem);margin:.6em 0 1.6em;color:var(--parchment);text-shadow:0 2px 10px rgba(0,0,0,.7)}
+.hero-tagline{font-family:var(--fell);font-style:italic;font-size:clamp(1.12rem,2.6vw,1.6rem);margin:.72em 0 1.9em;color:var(--parchment);text-shadow:0 2px 14px rgba(0,0,0,.82)}
 .hero-actions{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
 .scroll-cue{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);z-index:4;color:var(--gold-light);display:flex;flex-direction:column;align-items:center;gap:6px;font-family:var(--fellsc);font-size:.72rem;letter-spacing:.25em;text-transform:uppercase;animation:bob 2.4s ease-in-out infinite}
 .scroll-cue svg{width:30px;height:30px}
@@ -215,7 +241,8 @@ section{position:relative}
   border:3px solid var(--espresso);box-shadow:0 10px 26px var(--shadow);
   background:#3a2817;cursor:pointer;
 }
-.cat img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .8s ease, filter .6s ease;filter:sepia(.28) saturate(.95) contrast(1.02)}
+.cat img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  transition:transform .9s var(--ease-cine),filter var(--dur-ui) var(--ease-soft);filter:saturate(.98) contrast(1.01)}
 .cat::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,12,4,.05) 30%,rgba(20,12,4,.55) 65%,rgba(20,12,4,.92));transition:background .5s}
 .cat-label{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:22px 22px 24px;color:var(--ivory);transform:translateY(calc(100% - 74px));transition:transform .5s ease}
 .cat-label h3{font-family:var(--western);font-size:1.5rem;color:#f6ead0;margin:0 0 .35em;text-shadow:0 2px 8px rgba(0,0,0,.7)}
@@ -237,7 +264,10 @@ section{position:relative}
 .about-pills span{font-family:var(--fellsc);font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;padding:.5em 1em;border:1.5px solid var(--tan-deep);border-radius:30px;color:var(--sepia);background:rgba(250,244,228,.4)}
 .about-photo{position:relative}
 .about-photo .frame{border:10px solid #2b1d12;outline:2px solid var(--gold);box-shadow:0 18px 40px var(--shadow);border-radius:2px;overflow:hidden;transform:rotate(-1.5deg)}
-.about-photo .frame img{filter:sepia(.22) contrast(1.03)}
+.about-photo .frame img{display:block;width:100%;height:auto}
+.about-photo .frame picture{display:block}
+.about-photo .photo-cap{margin:18px 4px 0;font-family:var(--fell);font-style:italic;font-size:.98rem;
+  line-height:1.6;color:var(--sepia);max-width:34ch}
 .about-photo .stamp{position:absolute;bottom:-26px;right:-18px;width:130px;height:130px;z-index:2}
 .tape{position:absolute;width:120px;height:34px;background:rgba(193,150,47,.45);top:-16px;left:40px;transform:rotate(-6deg);box-shadow:0 2px 6px rgba(0,0,0,.2);backdrop-filter:blur(1px)}
 
@@ -251,15 +281,49 @@ section{position:relative}
 .section-dark .section-tag{color:var(--gold)}
 .section-dark .section-sub{color:var(--tan)}
 .section-dark .flourish{color:var(--gold)}
-.masonry{column-count:4;column-gap:16px}
-.masonry .tile{break-inside:avoid;margin-bottom:16px;position:relative;border:3px solid #000;border-radius:3px;overflow:hidden;cursor:pointer;box-shadow:0 8px 20px rgba(0,0,0,.45);background:#1a1109}
-.masonry .tile img{width:100%;height:auto;transition:transform .7s ease, filter .5s;filter:sepia(.2) contrast(1.02)}
+.masonry{display:flex;flex-direction:column;gap:54px}
+.stage-group{display:block}
+.stage{display:flex;align-items:baseline;gap:14px;margin:0 0 18px;font-family:var(--fellsc);
+  letter-spacing:.2em;text-transform:uppercase;font-size:.86rem;color:var(--gold-light);font-weight:400}
+.stage .stage-no{font-size:.72rem;color:var(--gold);opacity:.75;letter-spacing:.1em}
+.stage .stage-rule{flex:1;height:1px;background:linear-gradient(90deg,rgba(193,150,47,.42),transparent)}
+/* Fixed row unit + spans keeps every crop aligned; no ragged column bottoms. */
+.stage-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(212px,1fr));
+  grid-auto-rows:104px;grid-auto-flow:dense;gap:14px}
+.stage-grid .tile{grid-row:span 2}
+.stage-grid .tile.is-tall{grid-row:span 3}
+/* Only a landscape lead earns the double-width slot — a tall lead would leave
+   a hole beside it that dense flow can't fill cleanly. */
+.stage-grid .tile.is-lead:not(.is-tall){grid-column:span 2;grid-row:span 3}
+.masonry .tile{position:relative;border:3px solid #000;border-radius:3px;overflow:hidden;cursor:pointer;
+  box-shadow:0 8px 20px rgba(0,0,0,.45);background:#1a1109;padding:0;display:block}
+.masonry .tile-cap{position:absolute;left:0;right:0;bottom:0;z-index:3;padding:22px 12px 10px;text-align:left;
+  font-family:var(--fell);font-size:.9rem;line-height:1.35;color:var(--parchment);
+  background:linear-gradient(180deg,transparent,rgba(16,10,4,.88));
+  opacity:0;transform:translateY(6px);transition:opacity var(--dur-ui) var(--ease-soft),transform var(--dur-ui) var(--ease-soft)}
+.masonry .tile:hover .tile-cap,.masonry .tile:focus-visible .tile-cap{opacity:1;transform:none}
+.masonry .tile picture{display:block;width:100%;height:100%}
+.masonry .tile img{display:block;width:100%;height:100%;object-fit:cover;
+  transition:transform .9s var(--ease-cine),filter var(--dur-ui) var(--ease-soft);filter:contrast(1.01)}
 .masonry .tile::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at center,transparent 50%,rgba(20,12,4,.5));opacity:.4;transition:opacity .4s}
 .masonry .tile .zoom{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--gold-light);opacity:0;transition:opacity .35s;z-index:2}
 .masonry .tile .zoom svg{width:44px;height:44px;filter:drop-shadow(0 2px 6px rgba(0,0,0,.6))}
-.masonry .tile:hover img{transform:scale(1.07);filter:sepia(.05) contrast(1.05)}
-.masonry .tile:hover::after{opacity:.15}
-.masonry .tile:hover .zoom{opacity:1}
+.masonry .tile:hover img,.masonry .tile:focus-visible img{transform:scale(1.045);filter:contrast(1.04)}
+.masonry .tile:hover::after,.masonry .tile:focus-visible::after{opacity:.12}
+.masonry .tile:hover .zoom,.masonry .tile:focus-visible .zoom{opacity:1}
+.masonry .tile{transition:transform var(--dur-ui) var(--ease-soft),box-shadow var(--dur-ui) var(--ease-soft)}
+.masonry .tile:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(0,0,0,.55)}
+/* Stage headings inside the walk-through */
+.masonry .stage{break-inside:avoid;margin:0 0 16px;padding:2px 0 10px;border-bottom:1px solid rgba(193,150,47,.28);
+  font-family:var(--fellsc);letter-spacing:.2em;text-transform:uppercase;font-size:.72rem;color:var(--gold-light);display:block}
+.masonry .stage:not(:first-child){margin-top:6px}
+.gal-note{text-align:center;margin-top:26px;font-family:var(--fellsc);letter-spacing:.14em;text-transform:uppercase;
+  font-size:.72rem;color:var(--tan);opacity:.85}
+.cat-grid-4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:1100px){.cat-grid-4{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.cat-grid-4{grid-template-columns:1fr}}
+.cat-more{margin:34px auto 0;max-width:760px;text-align:center;color:var(--sepia);font-size:1.02rem;line-height:1.7}
+.cat-more strong{color:var(--espresso);font-weight:600}
 
 /* ---------- Lightbox ---------- */
 .lightbox{position:fixed;inset:0;z-index:120;background:rgba(15,9,4,.94);display:none;align-items:center;justify-content:center;padding:40px}
@@ -299,7 +363,18 @@ section{position:relative}
 .postcard .who span{display:block;font-family:var(--serif);text-transform:none;letter-spacing:0;font-style:italic;color:var(--sepia);font-size:.85rem;margin-top:2px}
 
 /* ---------- Visit ---------- */
-.visit-wrap{display:grid;grid-template-columns:1fr 1fr;gap:46px;align-items:stretch}
+.visit-wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:46px;align-items:start}
+.visit-side{display:flex;flex-direction:column;gap:22px}
+.arrival{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+.arrival li{display:flex;gap:16px;align-items:flex-start;padding:16px 18px;
+  background:rgba(241,227,198,.05);border:1px solid rgba(193,150,47,.22);border-radius:3px}
+.arrival li+li{border-top-color:rgba(193,150,47,.12)}
+.arrival .ic{flex:0 0 auto;width:34px;height:34px;display:grid;place-items:center;color:var(--gold);
+  border:1px solid rgba(193,150,47,.4);border-radius:50%}
+.arrival .ic svg{width:18px;height:18px}
+.arrival h4{font-family:var(--fellsc);letter-spacing:.14em;text-transform:uppercase;font-size:.78rem;
+  color:var(--gold-light);margin:0 0 .35em}
+.arrival p{margin:0;font-size:.98rem;line-height:1.62;color:var(--tan)}
 .visit-card{background:linear-gradient(180deg,rgba(250,244,228,.7),rgba(241,227,198,.6));border:2px solid var(--espresso);border-radius:4px;padding:40px;box-shadow:0 12px 30px var(--shadow);position:relative}
 .visit-card .corner{position:absolute;width:26px;height:26px;border-color:var(--gold);border-style:solid}
 .cc-tl{top:10px;left:10px;border-width:2px 0 0 2px}
@@ -315,8 +390,8 @@ section{position:relative}
 .hours-table{width:100%;border-collapse:collapse;margin-top:4px}
 .hours-table td{padding:5px 0;font-size:1.05rem;color:var(--espresso-2)}
 .hours-table td:last-child{text-align:right;font-family:var(--fellsc);letter-spacing:.04em}
-.map-frame{border:10px solid #2b1d12;outline:2px solid var(--gold);border-radius:3px;overflow:hidden;box-shadow:0 14px 34px var(--shadow);min-height:420px;height:100%}
-.map-frame iframe{width:100%;height:100%;min-height:420px;border:0;display:block;filter:sepia(.32) contrast(1.02)}
+.map-frame{border:10px solid #2b1d12;outline:2px solid var(--gold);border-radius:3px;overflow:hidden;box-shadow:0 14px 34px var(--shadow);min-height:300px}
+.map-frame iframe{width:100%;height:300px;border:0;display:block;filter:sepia(.18) contrast(1.02)}
 .visit-actions{margin-top:8px;display:flex;flex-wrap:wrap;gap:14px}
 
 /* ---------- Social ---------- */
@@ -331,6 +406,12 @@ section{position:relative}
 .follow-imgs .fi:hover img{transform:scale(1.08)}
 
 /* ---------- Footer ---------- */
+.reviews-empty{max-width:560px;margin:8px auto 0;text-align:center;padding:34px 26px;
+  border:1px dashed rgba(164,86,47,.45);border-radius:4px;background:rgba(250,244,228,.42)}
+.reviews-empty p{margin:0 0 1.2rem;font-family:var(--fell);font-style:italic;font-size:1.1rem;color:var(--sepia)}
+.footer-mark{display:flex;align-items:center;justify-content:center;gap:18px;padding:30px 0 4px;color:var(--gold)}
+.footer-mark .fm-rule{height:1px;flex:0 1 120px;background:linear-gradient(90deg,transparent,rgba(193,150,47,.55),transparent)}
+.footer-mark .fm-chest{width:52px;height:39px;opacity:.85}
 .footer{background:linear-gradient(180deg,#1c130a,#2b1d12);color:var(--parchment);border-top:3px double var(--gold);padding:70px 0 30px;position:relative}
 .footer .quote{text-align:center;font-family:var(--western);font-size:clamp(1.5rem,3.6vw,2.4rem);color:var(--gold-light);margin-bottom:2.4rem;text-shadow:0 2px 10px rgba(0,0,0,.5)}
 .footer-cols{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;padding-bottom:34px;border-bottom:1px solid rgba(193,150,47,.3)}
@@ -345,15 +426,31 @@ section{position:relative}
 .footer-bottom{text-align:center;padding-top:24px;font-size:.85rem;color:var(--sepia);font-family:var(--fellsc);letter-spacing:.08em}
 
 /* ---------- Reveal animation ---------- */
-.reveal{opacity:0;transform:translateY(34px);transition:opacity .9s ease, transform .9s ease}
+/* Reveal primitives vary by element type so the page doesn't move in lockstep. */
+.reveal{opacity:0;transform:translateY(16px) scale(.988);
+  transition:opacity var(--dur-reveal) var(--ease-cine),transform var(--dur-reveal) var(--ease-cine),filter var(--dur-reveal) var(--ease-cine)}
 .reveal.in{opacity:1;transform:none}
+/* Titles settle out of focus rather than sliding — steadier, less template-y */
+.section-title.reveal,.fresh-head.reveal h2,.about-text.reveal h2{transform:none;filter:blur(7px)}
+.section-title.reveal.in,.fresh-head.reveal.in h2,.about-text.reveal.in h2{filter:blur(0)}
+.station.reveal{transform:none;letter-spacing:.5em;transition-duration:1.05s}
+.station.reveal.in{letter-spacing:.22em}
+.flourish.reveal{transform:scale(.7) rotate(-14deg);transition-duration:900ms}
+.flourish.reveal.in{transform:none}
+/* Framed photographs wipe open, like a print being uncovered */
+.about-photo.reveal,.map-frame.reveal{transform:none;clip-path:inset(0 0 100% 0);transition-duration:980ms}
+.about-photo.reveal.in,.map-frame.reveal.in{clip-path:inset(0 0 0 0)}
+/* Grid children stagger via inline --i set in JS */
+.reveal[style*="--i"]{transition-delay:calc(var(--i) * 90ms)}
 
 /* ---------- Responsive ---------- */
 @media(max-width:980px){
   .cat-grid{grid-template-columns:repeat(2,1fr)}
+  .visit-wrap{grid-template-columns:1fr;gap:30px}
+  .m-card{width:280px;height:210px}
   .why-grid,.cards{grid-template-columns:1fr 1fr}
   .about-wrap,.visit-wrap{grid-template-columns:1fr;gap:40px}
-  .masonry{column-count:3}
+  .stage-grid{grid-template-columns:repeat(auto-fill,minmax(190px,1fr))}
   .footer-cols{grid-template-columns:1fr 1fr}
   .follow-imgs{grid-template-columns:repeat(4,1fr)}
 }
@@ -368,8 +465,12 @@ section{position:relative}
   .nav-toggle{display:flex}
   .cat-grid{grid-template-columns:1fr}
   .why-grid,.cards{grid-template-columns:1fr}
-  .masonry{column-count:2;column-gap:12px}
-  .masonry .tile{margin-bottom:12px}
+  .masonry{gap:40px}
+  .stage-grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:88px;gap:10px}
+  .stage-grid .tile.is-lead:not(.is-tall){grid-column:span 2;grid-row:span 3}
+  .masonry .tile-cap{font-size:.82rem;padding:18px 9px 8px}
+  .m-card{width:250px;height:190px}
+  .arrival li{padding:14px 15px;gap:13px}
   .footer-cols{grid-template-columns:1fr;gap:30px}
   .follow-imgs{grid-template-columns:repeat(2,1fr)}
   .cat-label{transform:translateY(0)}
@@ -380,7 +481,11 @@ section{position:relative}
 }
 @media(prefers-reduced-motion:reduce){
   *:not(.bc3d-float):not(.bc3d-sheen){animation:none!important;scroll-behavior:auto}
-  .reveal{opacity:1;transform:none;transition:none}
+  .reveal,.reveal.in{opacity:1;transform:none;transition:none;filter:none;clip-path:none;letter-spacing:inherit}
+  .station.reveal{letter-spacing:.22em}
+  .hero-inner>*{opacity:1}
+  .hero-layer{transition:none}
+  .hero-layer img{transform:none}
 }
 
 /* ============================================================
@@ -491,7 +596,7 @@ section{position:relative}
 .cat:hover .open-hint{opacity:.95;transform:translateY(0)}
 
 /* ---- Gallery logbook captions ---- */
-.masonry .tile .logno{position:absolute;top:8px;left:8px;z-index:3;background:rgba(26,17,9,.78);color:var(--gold-light);
+.masonry .tile .logno{display:none;position:absolute;top:8px;left:8px;z-index:3;background:rgba(26,17,9,.78);color:var(--gold-light);
   font-family:var(--fellsc);letter-spacing:.06em;font-size:.66rem;padding:2px 7px;border:1px solid var(--gold);border-radius:2px;opacity:0;transition:opacity .35s}
 .masonry .tile:hover .logno{opacity:1}
 
@@ -547,7 +652,7 @@ section{position:relative}
 .marquee-track{display:flex;gap:18px;width:max-content;animation:scroll-x 60s linear infinite;will-change:transform}
 .marquee:hover .marquee-track,.marquee.paused .marquee-track{animation-play-state:paused}
 @keyframes scroll-x{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-.m-card{position:relative;flex:0 0 auto;width:230px;height:170px;border-radius:5px;overflow:hidden;
+.m-card{position:relative;flex:0 0 auto;width:320px;height:240px;border-radius:5px;overflow:hidden;
   border:2px solid rgba(193,150,47,.4);box-shadow:0 10px 24px rgba(0,0,0,.45)}
 .m-card img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(1.03)}
 .m-card figcaption{position:absolute;left:0;right:0;bottom:0;padding:18px 10px 7px;
@@ -752,7 +857,21 @@ section{position:relative}
 
 <!-- ============ HERO ============ -->
 <section class="hero" id="top">
-  <div class="hero-bg" style="background-image:url('img/IMG_0989-hero.jpg')" role="img" aria-label="The K&amp;A This &amp; That Thrift storefront entrance in Albany, NY"></div>
+  <div class="hero-media">
+    <picture class="hero-layer is-active" data-hero-layer>
+      <source media="(max-width:640px)" type="image/webp" srcset="img/hero-storefront-angled-p.webp">
+      <source media="(max-width:640px)" srcset="img/hero-storefront-angled-p.jpg">
+      <source type="image/webp" srcset="img/hero-storefront-angled.webp">
+      <img src="img/hero-storefront-angled.jpg" width="2000" height="1125" fetchpriority="high" decoding="async"
+           alt="The K&amp;A This &amp; That Thrift storefront inside Colonie Center, its hand-cut sign above an open entrance looking into the shop floor">
+    </picture>
+    <picture class="hero-layer" data-hero-layer aria-hidden="true">
+      <source media="(max-width:640px)" type="image/webp" srcset="img/hero-storefront-front-p.webp">
+      <source media="(max-width:640px)" srcset="img/hero-storefront-front-p.jpg">
+      <source type="image/webp" srcset="img/hero-storefront-front.webp">
+      <img src="img/hero-storefront-front.jpg" width="2000" height="1125" loading="lazy" decoding="async" alt="">
+    </picture>
+  </div>
   <canvas id="dust" aria-hidden="true"></canvas>
   <div class="hero-inner">
     <p class="hero-eyebrow">&#10022; Albany's Hidden Treasure Shop &#10022;</p>
@@ -793,50 +912,41 @@ section{position:relative}
     <h2 class="section-title reveal">Open the Treasure Chests</h2>
     <div class="flourish reveal"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.6 4.9H19l-4.3 3.1 1.6 5L12 11.9 7.7 15l1.6-5L5 6.9h5.4z"/></svg></div>
     <p class="section-sub reveal">Our shelves are restocked daily with rare finds and hidden gems hauled in from estates, attics and collections all over the Capital Region. Every category is a chest waiting to be opened &mdash; you never know what you&rsquo;ll uncover.</p>
-    <div class="cat-grid">
+    <div class="cat-grid cat-grid-4">
       <article class="cat reveal" tabindex="0">
         <span class="rivet tl"></span><span class="rivet tr"></span><span class="rivet bl"></span><span class="rivet br"></span>
         <span class="open-hint">&#10022; Open the Chest &#10022;</span>
-        <img src="img/IMG_1011-sm.jpg" alt="Racks of vintage and modern clothing including a Polo shirt at K&amp;A Thrift" loading="lazy">
-        <svg class="cat-corner" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.6 4.9H19l-4.3 3.1 1.6 5L12 11.9 7.7 15l1.6-5L5 6.9h5.4z"/></svg>
-        <div class="cat-label"><h3>Vintage Clothing</h3><p>Men&rsquo;s, women&rsquo;s &amp; children&rsquo;s apparel &mdash; from everyday staples to one-of-a-kind retro pieces.</p></div>
-      </article>
-      <article class="cat reveal" tabindex="0">
-        <span class="rivet tl"></span><span class="rivet tr"></span><span class="rivet bl"></span><span class="rivet br"></span>
-        <span class="open-hint">&#10022; Open the Chest &#10022;</span>
-        <img src="img/IMG_0996-sm.jpg" alt="Dining table set with vintage china and glassware at K&amp;A Thrift" loading="lazy">
+        <img src="img/shop-china-wall.jpg" width="1400" height="1050" loading="lazy" decoding="async"
+             alt="Wall shelves of fine china, dinnerware sets and stemware above a set dining table at K&amp;A Thrift">
         <svg class="cat-corner" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.6 4.9H19l-4.3 3.1 1.6 5L12 11.9 7.7 15l1.6-5L5 6.9h5.4z"/></svg>
         <div class="cat-label"><h3>Home Goods</h3><p>Dishware, linens, kitchenware &amp; small appliances to set the perfect table.</p></div>
       </article>
       <article class="cat reveal" tabindex="0">
         <span class="rivet tl"></span><span class="rivet tr"></span><span class="rivet bl"></span><span class="rivet br"></span>
         <span class="open-hint">&#10022; Open the Chest &#10022;</span>
-        <img src="img/IMG_0992-sm.jpg" alt="Display case of vintage colored glassware, figurines and collectibles" loading="lazy">
+        <img src="img/IMG_0992-sm.jpg" width="675" height="900" loading="lazy" decoding="async" alt="A lit display case of vintage colored glass, figurines and small collectibles">
         <svg class="cat-corner" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.6 4.9H19l-4.3 3.1 1.6 5L12 11.9 7.7 15l1.6-5L5 6.9h5.4z"/></svg>
         <div class="cat-label"><h3>Collectibles</h3><p>Rare glass, figurines, die-cast cars, vintage toys &amp; specialty curiosities.</p></div>
       </article>
       <article class="cat reveal" tabindex="0">
         <span class="rivet tl"></span><span class="rivet tr"></span><span class="rivet bl"></span><span class="rivet br"></span>
         <span class="open-hint">&#10022; Open the Chest &#10022;</span>
-        <img src="img/IMG_0998-sm.jpg" alt="Vintage decor table setting with brass lantern at K&amp;A Thrift" loading="lazy">
+        <img src="img/IMG_0998-sm.jpg" width="675" height="900" loading="lazy" decoding="async" alt="Lamps, a brass lantern and framed wall pieces arranged on a decor table">
         <svg class="cat-corner" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.6 4.9H19l-4.3 3.1 1.6 5L12 11.9 7.7 15l1.6-5L5 6.9h5.4z"/></svg>
         <div class="cat-label"><h3>Decor</h3><p>Lighting, wall art, lanterns &amp; accent pieces to give any room character.</p></div>
       </article>
       <article class="cat reveal" tabindex="0">
         <span class="rivet tl"></span><span class="rivet tr"></span><span class="rivet bl"></span><span class="rivet br"></span>
         <span class="open-hint">&#10022; Open the Chest &#10022;</span>
-        <img src="img/IMG_0995-sm.jpg" alt="Antique sewing machine in a wooden cabinet" loading="lazy">
+        <img src="img/IMG_0995-sm.jpg" width="900" height="675" loading="lazy" decoding="async" alt="An antique treadle sewing machine set into its original wooden cabinet">
         <svg class="cat-corner" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.6 4.9H19l-4.3 3.1 1.6 5L12 11.9 7.7 15l1.6-5L5 6.9h5.4z"/></svg>
         <div class="cat-label"><h3>Antiques</h3><p>Heirloom furniture, vintage machines &amp; rare pieces with a story to tell.</p></div>
       </article>
-      <article class="cat reveal" tabindex="0">
-        <span class="rivet tl"></span><span class="rivet tr"></span><span class="rivet bl"></span><span class="rivet br"></span>
-        <span class="open-hint">&#10022; Open the Chest &#10022;</span>
-        <img src="img/IMG_1008-sm.jpg" alt="Clothing racks with handbags and accessories at K&amp;A Thrift" loading="lazy">
-        <svg class="cat-corner" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.6 4.9H19l-4.3 3.1 1.6 5L12 11.9 7.7 15l1.6-5L5 6.9h5.4z"/></svg>
-        <div class="cat-label"><h3>Accessories</h3><p>Shoes, belts, jewelry &amp; bags &mdash; the finishing touches to any look.</p></div>
-      </article>
     </div>
+    <p class="cat-more reveal">Also on the floor: <strong>clothing for men, women &amp; kids</strong>,
+      <strong>shoes, bags &amp; jewelry</strong>, <strong>furniture</strong>, <strong>books, DVDs &amp; VHS</strong>,
+      <strong>toys &amp; games</strong>, <strong>tools</strong>, <strong>electronics &amp; small appliances</strong>
+      and whatever came through the door this morning.</p>
   </div>
 </section>
 
@@ -879,7 +989,14 @@ section{position:relative}
       </div>
       <div class="about-photo reveal">
         <span class="tape" aria-hidden="true"></span>
-        <div class="frame"><img src="img/IMG_0988-sm.jpg" alt="The K&amp;A This &amp; That Thrift storefront and curated window display with the shop's hand-lettered sign" loading="lazy"></div>
+        <div class="frame">
+          <picture>
+            <source type="image/webp" srcset="img/about-storefront.webp">
+            <img src="img/about-storefront.jpg" width="1200" height="900" loading="lazy" decoding="async"
+                 alt="The K&amp;A This &amp; That Thrift entrance seen head-on, with furniture, glassware and a full dining set arranged just inside the doorway">
+          </picture>
+        </div>
+        <p class="photo-cap">The shop, seen from the mall walkway &mdash; top floor, post office entrance.</p>
         <svg class="stamp" viewBox="0 0 120 120" aria-hidden="true">
           <circle cx="60" cy="60" r="56" fill="none" stroke="#a4562f" stroke-width="2"/>
           <circle cx="60" cy="60" r="46" fill="none" stroke="#a4562f" stroke-width="1" stroke-dasharray="3 3"/>
@@ -905,8 +1022,10 @@ section{position:relative}
     <p class="station reveal"><span class="st-rule"></span><span class="st-badge">III</span><span class="st-word">Glimpses From Within</span><span class="st-rule r"></span></p>
     <h2 class="section-title reveal">The Treasure Gallery</h2>
     <div class="flourish reveal"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.6 4.9H19l-4.3 3.1 1.6 5L12 11.9 7.7 15l1.6-5L5 6.9h5.4z"/></svg></div>
-    <p class="section-sub reveal">Wander the aisles from wherever you are. These are real photos from inside our shop &mdash; but remember, the inventory changes daily. What you see today may be gone tomorrow, and tomorrow brings something new.</p>
+    <p class="section-sub reveal">Start at the door and walk the floor. These are real photos, taken in the shop, not staged &mdash;
+      and the inventory turns over constantly, so treat them as a sense of the place rather than a catalogue.</p>
     <div class="masonry" id="masonry"></div>
+    <p class="gal-note reveal">Photographed in-store. What&rsquo;s on the shelves changes daily.</p>
   </div>
 </section>
 
@@ -957,26 +1076,17 @@ section{position:relative}
     <p class="station reveal"><span class="st-rule"></span><span class="st-badge">V</span><span class="st-word">Tales From The Hunt</span><span class="st-rule r"></span></p>
     <h2 class="section-title reveal">Logbook of Fellow Hunters</h2>
     <div class="flourish reveal"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.6 4.9H19l-4.3 3.1 1.6 5L12 11.9 7.7 15l1.6-5L5 6.9h5.4z"/></svg></div>
-    <p class="section-sub reveal">Postcards from fellow treasure hunters who found something special.</p>
-    <div class="cards">
-      <figure class="postcard reveal">
-        <span class="pc-stamp" aria-hidden="true">K&amp;A</span>
-        <div class="stars" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-        <blockquote>&ldquo;I stop in almost every week and there&rsquo;s always something new. Found a gorgeous set of vintage china for next to nothing. It&rsquo;s like a treasure hunt every single time.&rdquo;</blockquote>
-        <figcaption class="who">Maria&nbsp;L.<span>Albany regular</span></figcaption>
-      </figure>
-      <figure class="postcard reveal">
-        <span class="pc-stamp" aria-hidden="true">K&amp;A</span>
-        <div class="stars" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-        <blockquote>&ldquo;Kim and Anthony are the kindest owners. They helped me load a solid wood dresser into my car and gave me a great deal. You won&rsquo;t find service like this at a chain store.&rdquo;</blockquote>
-        <figcaption class="who">James&nbsp;T.<span>Furniture find</span></figcaption>
-      </figure>
-      <figure class="postcard reveal">
-        <span class="pc-stamp" aria-hidden="true">K&amp;A</span>
-        <div class="stars" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-        <blockquote>&ldquo;A hidden gem in the Capital Region. The collectibles case alone is worth the trip &mdash; I scored a full set of Hot Wheels still on the card. Bring time, you&rsquo;ll want to dig through it all.&rdquo;</blockquote>
-        <figcaption class="who">Dani&nbsp;R.<span>Collector</span></figcaption>
-      </figure>
+    <p class="section-sub reveal">What people say after a visit.</p>
+    <!-- Reviews render from the REVIEWS array in the script block below.
+         Paste real Google review text there and this section fills in automatically.
+         While the array is empty it shows the invitation state instead of placeholders. -->
+    <div class="cards" id="reviewCards"></div>
+    <div class="reviews-empty reveal" id="reviewsEmpty" hidden>
+      <p>Reviews are being collected from Google and will appear here.</p>
+      <a class="btn btn-primary" href="https://search.google.com/local/writereview?placeid=REPLACE_WITH_PLACE_ID" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 2l2.9 6.3 6.6.7-4.9 4.4 1.4 6.6L12 16.6 6 20l1.4-6.6L2.5 9l6.6-.7z"/></svg>
+        Leave a review on Google
+      </a>
     </div>
   </div>
 </section>
@@ -1023,11 +1133,27 @@ section{position:relative}
           <a class="btn btn-ghost" href="tel:+15184874676">Call The Shop</a>
         </div>
       </div>
-      <div class="map-frame reveal">
-        <iframe
-          title="Map to K&A This & That Thrift, 1417 Central Ave, Albany, NY 12205"
-          src="https://maps.google.com/maps?q=1417%20Central%20Ave%2C%20Albany%2C%20NY%2012205&t=&z=15&ie=UTF8&iwloc=&output=embed"
-          loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      <div class="visit-side">
+        <div class="map-frame reveal">
+          <iframe
+            title="Map showing K&A This &amp; That Thrift at 1417 Central Ave, Albany, NY 12205"
+            src="https://maps.google.com/maps?q=1417%20Central%20Ave%2C%20Albany%2C%20NY%2012205&t=&z=15&ie=UTF8&iwloc=&output=embed"
+            loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        <ul class="arrival reveal">
+          <li>
+            <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 20V9l9-5 9 5v11"/><path d="M9 20v-6h6v6"/></svg></span>
+            <div><h4>Once you&rsquo;re inside</h4><p>Top floor, straight through the post office entrance. Take the stairs or the elevator up &mdash; you&rsquo;ll see our sign from the walkway.</p></div>
+          </li>
+          <li>
+            <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M9 16V8h3.2a2.4 2.4 0 010 4.8H9"/></svg></span>
+            <div><h4>Parking</h4><p>Free lot parking out front, no meters and no permit. Park near the post office entrance and you&rsquo;re a minute from the door.</p></div>
+          </li>
+          <li>
+            <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.6 2.6 0 115 .9c0 1.7-2.5 2-2.5 3.6"/><circle cx="12" cy="17.4" r=".9" fill="currentColor" stroke="none"/></svg></span>
+            <div><h4>Bring time</h4><p>Most people underestimate how long they&rsquo;ll stay. The shelves reward a slow lap, and the stock is different every week.</p></div>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
@@ -1055,10 +1181,10 @@ section{position:relative}
       </a>
     </div>
     <div class="follow-imgs reveal">
-      <div class="fi"><img src="img/IMG_0992-sm.jpg" alt="Vintage glassware collectibles" loading="lazy"></div>
-      <div class="fi"><img src="img/IMG_1010-sm.jpg" alt="Hot Wheels die-cast car collection" loading="lazy"></div>
-      <div class="fi"><img src="img/IMG_1002-sm.jpg" alt="Leather loveseat with farmhouse pillows" loading="lazy"></div>
-      <div class="fi"><img src="img/IMG_1003-sm.jpg" alt="Rustic log bed frame" loading="lazy"></div>
+      <div class="fi"><img src="img/IMG_0992-sm.jpg" width="675" height="900" decoding="async" alt="Vintage glassware collectibles" loading="lazy"></div>
+      <div class="fi"><img src="img/IMG_1010-sm.jpg" width="675" height="900" decoding="async" alt="Hot Wheels die-cast car collection" loading="lazy"></div>
+      <div class="fi"><img src="img/IMG_1002-sm.jpg" width="900" height="675" decoding="async" alt="Leather loveseat with farmhouse pillows" loading="lazy"></div>
+      <div class="fi"><img src="img/IMG_1003-sm.jpg" width="900" height="675" decoding="async" alt="Rustic log bed frame" loading="lazy"></div>
     </div>
   </div>
 </section>
@@ -1154,6 +1280,19 @@ section{position:relative}
         </ul>
       </div>
     </div>
+    <div class="footer-mark" aria-hidden="true">
+      <span class="fm-rule"></span>
+      <svg viewBox="0 0 64 48" class="fm-chest">
+        <path d="M8 20a24 24 0 0148 0v3H8z" fill="none" stroke="currentColor" stroke-width="2.2"/>
+        <rect x="6" y="23" width="52" height="19" rx="2.5" fill="none" stroke="currentColor" stroke-width="2.2"/>
+        <path d="M6 30h52" stroke="currentColor" stroke-width="1.6" opacity=".65"/>
+        <path d="M32 9v14" stroke="currentColor" stroke-width="1.6" opacity=".5"/>
+        <rect x="28" y="27" width="8" height="10" rx="1.6" fill="none" stroke="currentColor" stroke-width="2"/>
+        <circle cx="32" cy="31.5" r="1.5" fill="currentColor"/>
+        <path d="M32 33v2.4" stroke="currentColor" stroke-width="1.6"/>
+      </svg>
+      <span class="fm-rule"></span>
+    </div>
     <div class="footer-bottom">&copy; <span id="year"></span> K&amp;A This &amp; That Thrift &middot; Albany, NY &middot; Donations of gently-used clothing &amp; small household items always welcome.</div>
   </div>
 </footer>
@@ -1184,41 +1323,79 @@ section{position:relative}
 (function(){
   "use strict";
 
-  /* ---- Gallery data ---- */
+  /* ---- Gallery: a walk through the store, entrance to checkout ----
+     `t` = thumbnail, `f` = full-size for the lightbox. Newer photos are already
+     sized and named directly; the original set uses the -sm / full pair.
+     `stage` starts a new leg of the walk-through.
+     NOTE: the electronics wall photo is deliberately not here — the shot doesn't
+     hold up next to the rest. Electronics is covered in the category copy instead. */
+  function old(f, c, w, h, stage){ return {t:"img/"+f+"-sm.jpg", f:"img/"+f+".jpg", c:c, w:w, h:h, stage:stage}; }
+  function neo(f, c, w, h, stage){ return {t:"img/"+f+".jpg", f:"img/"+f+"-lg.jpg", c:c, w:w, h:h, stage:stage}; }
+
+  /* ---- Gallery: a walk through the store ----
+     Deliberately short. Ten photos were cut in review for softness, low contrast
+     or redundancy (see notes below); a weak photo costs more than a missing one.
+     CUT: IMG_0988, IMG_0991, IMG_0993, IMG_0996, IMG_0997, IMG_1007,
+          IMG_1008, IMG_1009, IMG_1011, IMG_1012
+     GAP: no clothing photo currently meets the bar — reshoot needed before
+          clothing gets a card or a gallery slot. */
   var gallery = [
-    {f:"IMG_0989", c:"Our storefront on Central Avenue", w:675, h:900},
-    {f:"IMG_0988", c:"The window display, full of finds", w:675, h:900},
-    {f:"IMG_1004", c:"Cozy sectional sofas, ready for a new home", w:900, h:675},
-    {f:"IMG_0992", c:"A case of vintage glass & collectibles", w:675, h:900},
-    {f:"IMG_1009", c:"Sharp men's blazers & suiting", w:675, h:900},
-    {f:"IMG_0996", c:"Dining sets dressed to impress", w:900, h:675},
-    {f:"IMG_1010", c:"Hot Wheels, still on the card", w:675, h:900},
-    {f:"IMG_1002", c:"Leather loveseat with farmhouse charm", w:900, h:675},
-    {f:"IMG_0991", c:"Shelves of fine china & dishware", w:900, h:675},
-    {f:"IMG_1011", c:"Racks of shirts & everyday staples", w:675, h:900},
-    {f:"IMG_0995", c:"An antique sewing machine cabinet", w:900, h:675},
-    {f:"IMG_1003", c:"A handcrafted rustic log bed", w:900, h:675},
-    {f:"IMG_0997", c:"Set the table with vintage finds", w:900, h:675},
-    {f:"IMG_1008", c:"Clothing, bags & accessories", w:675, h:900},
-    {f:"IMG_0998", c:"Decor & lighting throughout the shop", w:675, h:900},
-    {f:"IMG_1007", c:"Electronics & entertainment gear", w:900, h:675},
-    {f:"IMG_0993", c:"Dining nooks waiting to be claimed", w:900, h:675},
-    {f:"IMG_1012", c:"There's always more to explore inside", w:675, h:900}
+    neo("shop-entrance-angled", "The storefront, just off the mall walkway", 1000, 1250, "At the door"),
+    neo("shop-entrance-front",  "Looking straight in from the entrance", 1400, 1050),
+
+    old("IMG_0992", "The glass case: figurines, colored glass, curiosities", 675, 900, "Collectibles & media"),
+    old("IMG_1010", "Hot Wheels, still on the card", 675, 900),
+    neo("shop-vhs-corner", "A wall of VHS, Disney figures and boxed toys", 1000, 1250),
+    neo("shop-dvd-corner", "DVD shelves and box sets, sorted by genre", 1000, 1250),
+
+    neo("shop-china-wall", "Dinnerware sets and stemware, shelf after shelf", 1400, 1050, "Housewares & curiosities"),
+    old("IMG_0995", "An antique sewing machine in its cabinet", 900, 675),
+    old("IMG_0998", "Lamps, lanterns and wall pieces", 675, 900),
+
+    old("IMG_1004", "Sectional sofas on the main floor", 900, 675, "Furniture"),
+    old("IMG_1002", "A leather loveseat with farmhouse trim", 900, 675),
+    old("IMG_1003", "A handcrafted rustic log bed", 900, 675)
   ];
 
+  /* Group the walk-through into legs so each stage reads as a room you move
+     through, rather than headings drifting inside one continuous column flow. */
   var masonry = document.getElementById("masonry");
   var frag = document.createDocumentFragment();
+  var groups = [];
   gallery.forEach(function(item, i){
-    var tile = document.createElement("button");
-    tile.className = "tile";
-    tile.setAttribute("data-index", i);
-    tile.setAttribute("aria-label", "View larger: " + item.c);
-    var no = ("0" + (i+1)).slice(-2);
-    tile.innerHTML =
-      '<span class="logno">Find No.&nbsp;'+no+'</span>' +
-      '<img src="img/'+item.f+'-sm.jpg" alt="'+item.c+'" width="'+item.w+'" height="'+item.h+'" loading="lazy" decoding="async">' +
-      '<span class="zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg></span>';
-    frag.appendChild(tile);
+    item._i = i;
+    if(item.stage || !groups.length) groups.push({name:item.stage, items:[]});
+    groups[groups.length-1].items.push(item);
+  });
+
+  groups.forEach(function(group, gi){
+    var sec = document.createElement("div");
+    sec.className = "stage-group reveal";
+    var head = document.createElement("h3");
+    head.className = "stage";
+    head.innerHTML = '<span class="stage-no">' + ("0"+(gi+1)).slice(-2) + '</span>' +
+                     '<span class="stage-name">' + group.name + '</span>' +
+                     '<span class="stage-rule" aria-hidden="true"></span>';
+    sec.appendChild(head);
+
+    var grid = document.createElement("div");
+    grid.className = "stage-grid";
+    group.items.forEach(function(item, k){
+      var portrait = item.h > item.w;
+      var tile = document.createElement("button");
+      tile.type = "button";
+      tile.className = "tile" + (portrait ? " is-tall" : "") + (k === 0 ? " is-lead" : "");
+      tile.setAttribute("data-index", item._i);
+      tile.setAttribute("aria-label", "View larger: " + item.c);
+      tile.innerHTML =
+        '<picture><source type="image/webp" srcset="'+item.t.replace(/\.jpg$/,".webp")+'">' +
+        '<img src="'+item.t+'" alt="'+item.c+'" width="'+item.w+'" height="'+item.h+'" loading="lazy" decoding="async"></picture>' +
+        '<span class="tile-cap">'+item.c+'</span>' +
+        '<span class="zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg></span>';
+      grid.appendChild(tile);
+    });
+    sec.appendChild(grid);
+    frag.appendChild(sec);
   });
   masonry.appendChild(frag);
 
@@ -1227,11 +1404,17 @@ section{position:relative}
   var freshMarquee = document.getElementById("freshMarquee");
   if(freshTrack){
     // A curated subset of real finds, duplicated for a seamless loop.
-    var freshPicks = [2,4,6,7,9,11,12,13,14,15,16,3];
+    // Featured discoveries — the strongest images only, in a deliberate order.
+    var freshPicks = ["shop-china-wall","IMG_1010","IMG_0992","IMG_1003","shop-dvd-corner",
+                      "IMG_0995","IMG_1004","shop-vhs-corner","IMG_1002","IMG_0998",
+                      "shop-entrance-front"];
+    var byName = {};
+    gallery.forEach(function(g){ byName[g.t.replace(/^img\/|-sm\.jpg$|\.jpg$/g,"")] = g; });
     var mHTML = "";
-    freshPicks.forEach(function(gi){
-      var item = gallery[gi];
-      mHTML += '<figure class="m-card"><img src="img/'+item.f+'-sm.jpg" alt="'+item.c+'" width="'+item.w+'" height="'+item.h+'" loading="lazy" decoding="async">' +
+    freshPicks.forEach(function(name){
+      var item = byName[name];
+      if(!item) return;
+      mHTML += '<figure class="m-card"><img src="'+item.t+'" alt="'+item.c+'" width="'+item.w+'" height="'+item.h+'" loading="lazy" decoding="async">' +
                '<figcaption>'+item.c+'</figcaption></figure>';
     });
     freshTrack.innerHTML = mHTML + mHTML; // duplicate set = 50% scroll loops seamlessly
@@ -1243,6 +1426,36 @@ section{position:relative}
     }
   }
 
+  /* ---- Reviews ----------------------------------------------------------
+     Paste real Google reviews here. Each entry:
+       { name:"First L.", meta:"what they came for", stars:5, text:"..." }
+     Leave the array empty and the section shows the invitation state instead. */
+  var REVIEWS = [];
+
+  (function renderReviews(){
+    var wrap = document.getElementById("reviewCards");
+    var empty = document.getElementById("reviewsEmpty");
+    if(!wrap || !empty) return;
+    if(!REVIEWS.length){
+      wrap.hidden = true;
+      empty.hidden = false;
+      return;
+    }
+    empty.hidden = true;
+    wrap.hidden = false;
+    var esc = function(t){ var d = document.createElement("div"); d.textContent = t; return d.innerHTML; };
+    wrap.innerHTML = REVIEWS.map(function(r, i){
+      var n = Math.max(1, Math.min(5, r.stars || 5));
+      return '<figure class="postcard reveal" style="--i:' + Math.min(i,6) + '">' +
+        '<span class="pc-stamp" aria-hidden="true">K&amp;A</span>' +
+        '<div class="stars" aria-label="' + n + ' out of 5 stars">' + "\u2605".repeat(n) + '</div>' +
+        '<blockquote>\u201c' + esc(r.text) + '\u201d</blockquote>' +
+        '<figcaption class="who">' + esc(r.name) +
+          (r.meta ? '<span>' + esc(r.meta) + '</span>' : '') +
+        '</figcaption></figure>';
+    }).join("");
+  })();
+
   /* ---- Lightbox ---- */
   var lb = document.getElementById("lightbox");
   var lbImg = document.getElementById("lbImg");
@@ -1252,7 +1465,7 @@ section{position:relative}
   function show(i){
     current = (i + gallery.length) % gallery.length;
     var item = gallery[current];
-    lbImg.src = "img/" + item.f + ".jpg";
+    lbImg.src = item.f;
     lbImg.alt = item.c;
     lbCap.textContent = "Find No. " + ("0"+(current+1)).slice(-2) + " \u2014 " + item.c;
   }
@@ -1310,6 +1523,49 @@ section{position:relative}
 
   /* ---- Reveal on scroll ---- */
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---- Hero: Ken Burns + slow crossfade between the two storefront frames ----
+     28s push at 2.2% is deliberately below the threshold where the eye tracks it
+     as movement; it should register as the image breathing, not zooming. */
+  (function heroMotion(){
+    var layers = [].slice.call(document.querySelectorAll("[data-hero-layer]"));
+    if(layers.length < 2 || reduce) return;
+    layers.forEach(function(l){
+      var im = l.querySelector("img");
+      if(im) im.classList.add("kb");
+    });
+    var idx = 0, timer = null;
+    function step(){
+      layers[idx].classList.remove("is-active");
+      layers[idx].setAttribute("aria-hidden", "true");
+      idx = (idx + 1) % layers.length;
+      layers[idx].classList.add("is-active");
+      layers[idx].removeAttribute("aria-hidden");
+    }
+    function start(){ if(!timer) timer = setInterval(step, 11000); }
+    function stop(){ clearInterval(timer); timer = null; }
+    // Don't burn cycles animating a hero nobody is looking at.
+    if("IntersectionObserver" in window){
+      new IntersectionObserver(function(en){
+        en[0].isIntersecting ? start() : stop();
+      }, {threshold:0.05}).observe(document.getElementById("top"));
+    } else { start(); }
+    document.addEventListener("visibilitychange", function(){
+      document.hidden ? stop() : start();
+    });
+  })();
+
+  /* ---- Reveal stagger: index children within each group so grids cascade ---- */
+  (function stagger(){
+    var groups = document.querySelectorAll(".cat-grid,.why-grid,.cards,.arrival,.footer-cols");
+    groups.forEach(function(g){
+      [].slice.call(g.children).forEach(function(child, i){
+        if(child.classList && child.classList.contains("reveal")){
+          child.style.setProperty("--i", Math.min(i, 6));
+        }
+      });
+    });
+  })();
   if("IntersectionObserver" in window && !reduce){
     var io = new IntersectionObserver(function(entries){
       entries.forEach(function(en){
