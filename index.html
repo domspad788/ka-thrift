@@ -22,8 +22,8 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%3E%3Crect%20width='24'%20height='24'%20rx='4'%20fill='%232b1d12'/%3E%3Cpath%20d='M12%203l1.7%205.2H19l-4.4%203.2%201.7%205.3L12%2013.4l-4.3%203.3%201.7-5.3L5%208.2h5.3z'%20fill='%23c1962f'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="image" href="img/hero-storefront-angled.webp" type="image/webp" media="(min-width:641px)" fetchpriority="high">
-<link rel="preload" as="image" href="img/hero-storefront-angled-p.webp" type="image/webp" media="(max-width:640px)" fetchpriority="high">
+<link rel="preload" as="image" href="img/hero-storefront-angled.jpg" media="(min-width:641px)" fetchpriority="high">
+<link rel="preload" as="image" href="img/hero-storefront-angled-p.jpg" media="(max-width:640px)" fetchpriority="high">
 <link href="https://fonts.googleapis.com/css2?family=Rye&family=IM+Fell+English+SC&family=IM+Fell+English:ital@0;1&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 <script type="application/ld+json">
 {
@@ -859,16 +859,12 @@ section{position:relative}
 <section class="hero" id="top">
   <div class="hero-media">
     <picture class="hero-layer is-active" data-hero-layer>
-      <source media="(max-width:640px)" type="image/webp" srcset="img/hero-storefront-angled-p.webp">
       <source media="(max-width:640px)" srcset="img/hero-storefront-angled-p.jpg">
-      <source type="image/webp" srcset="img/hero-storefront-angled.webp">
       <img src="img/hero-storefront-angled.jpg" width="2000" height="1125" fetchpriority="high" decoding="async"
            alt="The K&amp;A This &amp; That Thrift storefront inside Colonie Center, its hand-cut sign above an open entrance looking into the shop floor">
     </picture>
     <picture class="hero-layer" data-hero-layer aria-hidden="true">
-      <source media="(max-width:640px)" type="image/webp" srcset="img/hero-storefront-front-p.webp">
       <source media="(max-width:640px)" srcset="img/hero-storefront-front-p.jpg">
-      <source type="image/webp" srcset="img/hero-storefront-front.webp">
       <img src="img/hero-storefront-front.jpg" width="2000" height="1125" loading="lazy" decoding="async" alt="">
     </picture>
   </div>
@@ -991,7 +987,6 @@ section{position:relative}
         <span class="tape" aria-hidden="true"></span>
         <div class="frame">
           <picture>
-            <source type="image/webp" srcset="img/about-storefront.webp">
             <img src="img/about-storefront.jpg" width="1200" height="900" loading="lazy" decoding="async"
                  alt="The K&amp;A This &amp; That Thrift entrance seen head-on, with furniture, glassware and a full dining set arranged just inside the doorway">
           </picture>
@@ -1384,8 +1379,7 @@ section{position:relative}
       tile.setAttribute("data-index", item._i);
       tile.setAttribute("aria-label", "View larger: " + item.c);
       tile.innerHTML =
-        '<picture><source type="image/webp" srcset="'+item.t.replace(/\.jpg$/,".webp")+'">' +
-        '<img src="'+item.t+'" alt="'+item.c+'" width="'+item.w+'" height="'+item.h+'" loading="lazy" decoding="async"></picture>' +
+        '<img src="'+item.t+'" alt="'+item.c+'" width="'+item.w+'" height="'+item.h+'" loading="lazy" decoding="async">' +
         '<span class="tile-cap">'+item.c+'</span>' +
         '<span class="zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg></span>';
       grid.appendChild(tile);
