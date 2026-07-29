@@ -660,6 +660,25 @@ section{position:relative}
   font-family:var(--fellsc);font-size:.74rem;letter-spacing:.03em;line-height:1.25}
 .fresh-cta{text-align:center;margin-top:34px}
 @media(max-width:760px){.m-card{width:170px;height:130px}.marquee-track{gap:12px}}
+/* ---- Gallery: infinite auto-scroll slider (ported from image-auto-slider component) ---- */
+.gallery-slider{margin-top:10px}
+.gallery-slider .marquee-track{gap:24px;animation-duration:75s}
+.g-slide{position:relative;flex:0 0 auto;width:300px;height:300px;border:0;padding:0;border-radius:14px;
+  overflow:hidden;cursor:pointer;background:#1a1109;outline:2px solid rgba(193,150,47,.38);outline-offset:-2px;
+  box-shadow:0 14px 34px rgba(0,0,0,.5)}
+.g-slide img{width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .45s var(--ease-soft),filter .45s var(--ease-soft)}
+.g-slide:hover img,.g-slide:focus-visible img{transform:scale(1.06);filter:brightness(1.12) saturate(1.05)}
+.g-slide .g-cap{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:26px 12px 10px;text-align:left;
+  background:linear-gradient(180deg,transparent,rgba(15,10,5,.92));color:var(--parchment);
+  font-family:var(--fellsc);font-size:.78rem;letter-spacing:.03em;line-height:1.25;
+  opacity:0;transform:translateY(6px);transition:opacity .35s,transform .35s}
+.g-slide:hover .g-cap,.g-slide:focus-visible .g-cap{opacity:1;transform:none}
+.g-slide .zoom{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;
+  color:var(--gold-light);opacity:0;transition:opacity .35s;pointer-events:none}
+.g-slide .zoom svg{width:40px;height:40px;filter:drop-shadow(0 2px 6px rgba(0,0,0,.6))}
+.g-slide:hover .zoom,.g-slide:focus-visible .zoom{opacity:.9}
+@media(max-width:760px){.gallery-slider .marquee-track{gap:16px;animation-duration:55s}.g-slide{width:210px;height:210px;border-radius:11px}}
 
 /* ---- Business open/closed status (uses existing palette only) ---- */
 .biz-status{display:inline-flex;align-items:center;gap:7px;font-family:var(--fellsc);letter-spacing:.04em;
@@ -1019,8 +1038,10 @@ section{position:relative}
     <div class="flourish reveal"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.6 4.9H19l-4.3 3.1 1.6 5L12 11.9 7.7 15l1.6-5L5 6.9h5.4z"/></svg></div>
     <p class="section-sub reveal">Start at the door and walk the floor. These are real photos, taken in the shop, not staged &mdash;
       and the inventory turns over constantly, so treat them as a sense of the place rather than a catalogue.</p>
-    <div class="masonry" id="masonry"></div>
-    <p class="gal-note reveal">Photographed in-store. What&rsquo;s on the shelves changes daily.</p>
+    <div class="marquee gallery-slider reveal" id="galleryMarquee">
+      <div class="marquee-track" id="galleryTrack"></div>
+    </div>
+    <p class="gal-note reveal">Photographed in-store &mdash; hover to pause, click any photo to enlarge. What&rsquo;s on the shelves changes daily.</p>
   </div>
 </section>
 
@@ -1348,46 +1369,25 @@ section{position:relative}
     old("IMG_1003", "A handcrafted rustic log bed", 900, 675)
   ];
 
-  /* Group the walk-through into legs so each stage reads as a room you move
-     through, rather than headings drifting inside one continuous column flow. */
-  var masonry = document.getElementById("masonry");
-  var frag = document.createDocumentFragment();
-  var groups = [];
-  gallery.forEach(function(item, i){
-    item._i = i;
-    if(item.stage || !groups.length) groups.push({name:item.stage, items:[]});
-    groups[groups.length-1].items.push(item);
-  });
-
-  groups.forEach(function(group, gi){
-    var sec = document.createElement("div");
-    sec.className = "stage-group reveal";
-    var head = document.createElement("h3");
-    head.className = "stage";
-    head.innerHTML = '<span class="stage-no">' + ("0"+(gi+1)).slice(-2) + '</span>' +
-                     '<span class="stage-name">' + group.name + '</span>' +
-                     '<span class="stage-rule" aria-hidden="true"></span>';
-    sec.appendChild(head);
-
-    var grid = document.createElement("div");
-    grid.className = "stage-grid";
-    group.items.forEach(function(item, k){
-      var portrait = item.h > item.w;
-      var tile = document.createElement("button");
-      tile.type = "button";
-      tile.className = "tile" + (portrait ? " is-tall" : "") + (k === 0 ? " is-lead" : "");
-      tile.setAttribute("data-index", item._i);
-      tile.setAttribute("aria-label", "View larger: " + item.c);
-      tile.innerHTML =
-        '<img src="'+item.t+'" alt="'+item.c+'" width="'+item.w+'" height="'+item.h+'" loading="lazy" decoding="async">' +
-        '<span class="tile-cap">'+item.c+'</span>' +
-        '<span class="zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg></span>';
-      grid.appendChild(tile);
-    });
-    sec.appendChild(grid);
-    frag.appendChild(sec);
-  });
-  masonry.appendChild(frag);
+  /* ---- Gallery: infinite auto-scroll slider (ported from image-auto-slider) ----
+     One continuous marquee of the real store photos, duplicated so the loop is
+     seamless. Auto-scrolls, pauses on hover so a photo can be aimed at and
+     clicked, and each slide opens the existing lightbox. */
+  var galleryTrack = document.getElementById("galleryTrack");
+  var galleryMarquee = document.getElementById("galleryMarquee");
+  gallery.forEach(function(item, i){ item._i = i; });
+  var slideHTML = gallery.map(function(item){
+    return '<button type="button" class="g-slide" data-index="'+item._i+'" aria-label="View larger: '+item.c+'">' +
+      '<img src="'+item.t+'" alt="'+item.c+'" width="'+item.w+'" height="'+item.h+'" loading="lazy" decoding="async">' +
+      '<span class="zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg></span>' +
+      '<span class="g-cap">'+item.c+'</span></button>';
+  }).join("");
+  galleryTrack.innerHTML = slideHTML + slideHTML; // duplicate set -> seamless 50% loop
+  if(galleryMarquee && "IntersectionObserver" in window){
+    new IntersectionObserver(function(entries){
+      galleryMarquee.classList.toggle("paused", !entries[0].isIntersecting);
+    }, {threshold:0}).observe(galleryMarquee);
+  }
 
   /* ---- Fresh Off The Hunt marquee ---- */
   var freshTrack = document.getElementById("freshTrack");
@@ -1471,8 +1471,8 @@ section{position:relative}
     document.body.style.overflow = "";
     if(lastFocus) lastFocus.focus();
   }
-  masonry.addEventListener("click", function(e){
-    var t = e.target.closest(".tile");
+  galleryTrack.addEventListener("click", function(e){
+    var t = e.target.closest(".g-slide");
     if(t) openLB(parseInt(t.getAttribute("data-index"),10));
   });
   document.getElementById("lbClose").addEventListener("click", closeLB);
