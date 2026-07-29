@@ -390,8 +390,10 @@ section{position:relative}
 .hours-table{width:100%;border-collapse:collapse;margin-top:4px}
 .hours-table td{padding:5px 0;font-size:1.05rem;color:var(--espresso-2)}
 .hours-table td:last-child{text-align:right;font-family:var(--fellsc);letter-spacing:.04em}
-.map-frame{border:10px solid #2b1d12;outline:2px solid var(--gold);border-radius:3px;overflow:hidden;box-shadow:0 14px 34px var(--shadow);min-height:300px}
-.map-frame iframe{width:100%;height:300px;border:0;display:block;filter:sepia(.18) contrast(1.02)}
+.map-frame{border:10px solid #2b1d12;outline:2px solid var(--gold);border-radius:3px;overflow:hidden;box-shadow:0 14px 34px var(--shadow);height:300px}
+.map-frame iframe{width:100%;height:322px;margin-bottom:-22px;border:0;display:block;filter:sepia(.18) contrast(1.02)}
+.map-attrib{margin:7px 2px 0;text-align:right;font-family:var(--fellsc);font-size:.66rem;letter-spacing:.03em;color:rgba(203,171,120,.6)}
+.map-attrib a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(203,171,120,.35)}
 .visit-actions{margin-top:8px;display:flex;flex-wrap:wrap;gap:14px}
 
 /* ---------- Social ---------- */
@@ -1134,6 +1136,7 @@ section{position:relative}
             src="https://www.openstreetmap.org/export/embed.html?bbox=-73.8199%2C42.7078%2C-73.8127%2C42.7114&amp;layer=mapnik&amp;marker=42.7095519%2C-73.8162787"
             loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
+        <p class="map-attrib">Map &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a></p>
         <ul class="arrival reveal">
           <li>
             <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 20V9l9-5 9 5v11"/><path d="M9 20v-6h6v6"/></svg></span>
